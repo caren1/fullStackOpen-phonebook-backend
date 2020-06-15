@@ -1,7 +1,10 @@
+require('dotenv').config()
+const Person = require('./models/person')
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
+
 
 app.use(express.json())
 app.use(cors())
@@ -46,7 +49,11 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    // response.json(persons)
+    Person.find({})
+    .then(persons => {
+        response.json(persons)
+    })
 })
 
 app.get('/info', (request, response) => {
@@ -58,14 +65,19 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
 
-    if(person) {
+    const person = Person.findById(request.params.id)
+    .then(person => {
         response.json(person)
-    } else {
-        return response.status(404).end()
-    }
+    })
+
+    // const id = Number(request.params.id)
+    // const person = persons.find(person => person.id === id)
+    // if(person) {
+    //     response.json(person)
+    // } else {
+    //     return response.status(404).end()
+    // }
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -88,15 +100,17 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    const person = {
+    const person = new Person({
         name: body.name,
-        number: body.number,
-        id,
-    }
+        number: body.number
+    })
 
-    console.log(person)
+    // console.log(person)
     persons = persons.concat(person);
-    response.json(person)
+    person.save()
+    .then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 let PORT = process.env.PORT;

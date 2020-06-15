@@ -12,7 +12,7 @@ console.log(password);
 //Notice that if the name contains whitespace characters, it must be enclosed in quotes:
 // node mongo.js yourpassword "Arto Vihavainen" 040-1234556
 
-const url = `mongodb+srv://admin-wojciech:${password}@thephonebook-uyc2n.mongodb.net/phoneBook?retryWrites=true&w=majority`
+const url = process.env.MONGODB_URI
 
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
     .then(() => console.log('Connected'))
