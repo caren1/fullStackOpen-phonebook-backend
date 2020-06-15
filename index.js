@@ -16,8 +16,7 @@ morgan.token('requestContent', function (req, res) {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :requestContent'))
 
-let persons = [
-    {
+let persons = [{
         name: 'Arto Hellas',
         number: '040-123456',
         id: 1
@@ -51,9 +50,9 @@ app.get('/', (request, response) => {
 app.get('/api/persons', (request, response) => {
     // response.json(persons)
     Person.find({})
-    .then(persons => {
-        response.json(persons)
-    })
+        .then(persons => {
+            response.json(persons)
+        })
 })
 
 app.get('/info', (request, response) => {
@@ -67,9 +66,9 @@ app.get('/info', (request, response) => {
 app.get('/api/persons/:id', (request, response) => {
 
     const person = Person.findById(request.params.id)
-    .then(person => {
-        response.json(person)
-    })
+        .then(person => {
+            response.json(person)
+        })
 
     // const id = Number(request.params.id)
     // const person = persons.find(person => person.id === id)
@@ -87,18 +86,19 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-    const id = Math.floor(Math.random() * (100 - persons.length)) + persons.length;
+    // const id = Math.floor(Math.random() * (100 - persons.length)) + persons.length;
     const body = request.body
 
-    if(!body.name || !body.number){
+    if (!body.name || !body.number) {
         return response.status(404).json({
             error: 'Name or Number in request is missing.'
         })
-    } else if(persons.find(person => person.name === body.name)){
-        return response.status(404).json({
-            error: 'Provided name is already in use, it must be UNIQUE.'
-        })
     }
+    // } else if (persons.find(person => person.name === body.name)) {
+    //     return response.status(404).json({
+    //         error: 'Provided name is already in use, it must be UNIQUE.'
+    //     })
+    // }
 
     const person = new Person({
         name: body.name,
@@ -108,9 +108,9 @@ app.post('/api/persons', (request, response) => {
     // console.log(person)
     persons = persons.concat(person);
     person.save()
-    .then(savedPerson => {
-        response.json(savedPerson)
-    })
+        .then(savedPerson => {
+            response.json(savedPerson)
+        })
 })
 
 let PORT = process.env.PORT;
