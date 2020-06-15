@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build:ui": "(if exist build rmdir /s /q build )&& cd ../fullstackOpen/part2/thephonebook && npm run build --prod && xcopy /E build ..\\..\\..\\thephonebook-backend\\build",
-    "deploy" : "git push heroku master",
-    "deploy:full" : "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
-    "logs:prod" :"heroku logs --tail",
+    "deploy": "git push heroku master",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
+    "logs:prod": "heroku logs --tail",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,6 +25,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mongoose": "^5.9.18",
     "morgan": "^1.10.0"
   }
 }
