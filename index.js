@@ -59,7 +59,7 @@ app.delete('/api/persons/:id', (request, response) => {
         .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
     if (!body.name || !body.number) {
@@ -68,13 +68,13 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    Person.find({name: body.name})
-        .then(person => {
-            if (person.lenght > 0) {
-                return response.status(400).json({
-                    error: 'Provided name is already in use, it must be UNIQUE.'
-                })
-            } else {
+    // Person.find({name: body.name})
+    //     .then(person => {
+            // if (person.lenght > 0) {
+            //     return response.status(400).json({
+            //         error: 'Provided name is already in use, it must be UNIQUE.'
+            //     })
+            // } else {
                 const person = new Person({
                     name: body.name,
                     number: body.number
@@ -84,8 +84,8 @@ app.post('/api/persons', (request, response) => {
                         response.json(savedPerson.toJSON())
                     })
                     .catch(error => next(error))
-            }
-        })
+            // }
+        // })
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -109,6 +109,8 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).send({
             error: 'malformatted id'
         })
+    } else if (error.name === 'ValidationError'){
+        return response.status(400).json({error: 'provided name was not unique.'})
     }
     next(error)
 }
