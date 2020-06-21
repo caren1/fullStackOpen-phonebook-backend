@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
+
 require('dotenv').config()
 
 const express = require('express')
@@ -13,7 +12,7 @@ app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 
-morgan.token('requestContent', function (request, response) {
+morgan.token('requestContent', function (request) {
   return JSON.stringify(request.body)
 })
 
@@ -109,6 +108,7 @@ const errorHandler = (error, request, response, next) => {
 }
 app.use(errorHandler)
 
+// eslint-disable-next-line no-undef
 let PORT = process.env.PORT
 
 app.listen(PORT, () => {
